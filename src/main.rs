@@ -55,11 +55,16 @@ fn main() -> io::Result<()> {
     let mut handle = std_out.lock();
 
     let mut count = 0;
+    let mut line_count = 0;
+    
+    handle.write_all(format!("[{:08}]\t", line_count).as_bytes())?;
     for bit in bit_buff.into_iter() {
 
         if count == line_len {
             count = 0;
+            line_count += 1;
             handle.write_all("\n".as_bytes())?;
+            handle.write_all(format!("[{:08}]\t", line_count).as_bytes())?;
         }
 
         if let Some(line_delim) = line_delim {
